@@ -1,50 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
-/**
- *
- * @author yeen
- */
 public class ConnectionBuilder {
 
-    public static Connection getConnection() throws SQLException, ClassNotFoundException {
+    public static Connection getConnection() throws ClassNotFoundException {
 
-        String username = "root";
-        String password = "Attapon1840%";
-        //String url = "jdbc:derby://localhost:1527/Hello";
-        String url = "jdbc:mysql://13.250.20.158:3306/GiveAware?zeroDateTimeBehavior=convertToNull";
+        Connection conn = null;
 
-        Connection con = null;
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection(url, username, password);
-        return con;
-    }
-
-    public static Connection getCon() {
-
-        Connection con = null;
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         try {
 
+            Properties prop = new Properties();
+
+            InputStream input = classloader.getResourceAsStream("config.properties");
+
+            prop.load(input);
+
+            String DB = prop.getProperty("jdbc.db");
+
+            String USERNAME = prop.getProperty("jdbc.username");
+
+            String PASSWORD = prop.getProperty("jdbc.password");
+
+            String PORT = prop.getProperty("jdbc.port");
+
             Class.forName("com.mysql.jdbc.Driver");
 
-            con = DriverManager.getConnection("jdbc:mysql://13.250.20.158:3306/GiveAware?zeroDateTimeBehavior=convertToNull", "root", "password");
+            conn = DriverManager.getConnection("jdbc:mysql://" + DB + ":" + PORT + "/GiveAware?zeroDateTimeBehavior=convertToNull", USERNAME, PASSWORD);
 
-        } catch (Exception e) {
+        } catch (SQLException | ClassCastException | IOException err) {
 
-            System.out.println(e);
+            System.err.println(err);
 
         }
 
-        return con;
+        return conn;
 
     }
+
 }

@@ -42,7 +42,7 @@ public class HelloWorld {
         Connection con = null;
         String world = "";
         try {
-            con = ConnectionBuilder.getConnection();
+            con = (Connection) ConnectionBuilder.getConnection();
             PreparedStatement ps = con.prepareStatement(SQL);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
