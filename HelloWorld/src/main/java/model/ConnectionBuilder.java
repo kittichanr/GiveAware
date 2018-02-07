@@ -20,7 +20,7 @@ public class ConnectionBuilder {
 
             Properties prop = new Properties();
 
-            InputStream input = classloader.getResourceAsStream("configdb.properties");
+            InputStream input = classloader.getResourceAsStream("config.properties");
 
             prop.load(input);
 
